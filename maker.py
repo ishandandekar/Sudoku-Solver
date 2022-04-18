@@ -1,5 +1,6 @@
 import numpy as np
 import random
+from collections import deque
 
 
 class sudoku_gen:
@@ -7,8 +8,16 @@ class sudoku_gen:
         self.mat = [[3, 0, 6, 5, 0, 8, 4, 0, 0], [5, 2, 0, 0, 0, 0, 0, 0, 0], [8, 7, 0, 0, 0, 0, 3, 1],
                     [0, 0, 3, 0, 1, 0, 0, 8, 0], [9, 0, 0, 8, 6, 3, 0, 0, 5], [0, 5, 0, 0, 9, 0, 6, 0, 0], [1, 3, 0, 0, 0, 0, 2, 5, 0], [0, 0, 0, 0, 0, 0, 0, 7, 4], [0, 0, 5, 2, 0, 6, 3, 0, 0]]
         self.lst = range(1, 10, 1)
-        self.path = []
-        self.path_indices = [[]]
+        self.active_numbers = deque()
+        self.active_numbers_indices = deque()
+
+    def give_zero(self):
+        for i in range(0, 10, 1):
+            row_lst = self.mat[i]
+            for j in range(0, 10, 1):
+                if row_lst[j] == 0:
+                    return (i, j)
+        return (None, None)
 
     @property
     def is_empty(self):
@@ -18,6 +27,17 @@ class sudoku_gen:
                 if j == 0:
                     count += 1
         return count
+
+    def add_number(self):
+        temp = self.lst
+        i, j = self.give_zero()
+        if i is not None and j is not None:
+            while True:
+                number = random.choice(temp)
+                if self.check(i, j, number):
+                    temp.remove(number)
+                else:
+                    self.update_board(i, j, number)
 
     def traverse(self):
         for i in range(len(self.mat)):
@@ -59,6 +79,9 @@ class sudoku_gen:
             row_lst = self.mat[k]
             grid_lst.append(
                 [x for x in row_lst if row_lst.index(x) in range_of_j])
+        if number in grid_lst:
+            return True
+        return False
 
     def update_board(self, i, j, number):
         self.mat[i][j] = number
