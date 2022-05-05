@@ -1,9 +1,31 @@
-from typing import List
 from Stack import Stack
 import numpy as np
 
 
 class Sudoku:
+
+    # def _check_valid(self, indices: List, number: int):  # DO NOT USE THIS
+    #     # Check in column
+    #     row, column = indices
+    #     for i in range(0, 82, 9):
+    #         if number in self.board.flatten()[i:i+column+1]:
+    #             return True
+
+    #     # Check in row
+    #     if number in self.board[row]:
+    #         return True
+
+    #     # Check in grid
+    #     grid = []
+    #     range_of_i, range_of_j = self._generate_grid(row, column)
+    #     for i in range_of_i:
+    #         for j in range_of_j:
+    #             grid.append(self.board[i][j])
+    #     if number in grid:
+    #         return True
+    #     return False
+
+    # i is row index (starts with 0), j is column index (starts with 0)
     def __init__(self, matrix):
         self.board = np.array(matrix)
         self.numbers = Stack()
@@ -21,28 +43,9 @@ class Sudoku:
                 else:
                     print(str(self.board[i][j]) + " ", end="")
 
-    def _check_valid(self, indices: List, number: int):  # DO NOT USE THIS
-        # Check in column
-        row, column = indices
-        for i in range(0, 82, 9):
-            if number in self.board.flatten()[i:i+column+1]:
-                return True
+    def solve(self):
+        pass
 
-        # Check in row
-        if number in self.board[row]:
-            return True
-
-        # Check in grid
-        grid = []
-        range_of_i, range_of_j = self._generate_grid(row, column)
-        for i in range_of_i:
-            for j in range_of_j:
-                grid.append(self.board[i][j])
-        if number in grid:
-            return True
-        return False
-
-    # i is row index (starts with 0), j is column index (starts with 0)
     def _grid_creator(self, i, j):
         if i % 3 == 0:
             range_of_i = [i, i+1, i+2]
