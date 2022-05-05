@@ -5,10 +5,12 @@ class Stack:
     def push(self, number):
         self.arr.append(number)
 
-    def get_stack(self):
+    @property
+    def stack_(self):
         return self.arr
 
-    def get_length(self):
+    @property
+    def length(self):
         return len(self.arr)
 
     def pop(self):
